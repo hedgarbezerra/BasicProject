@@ -1,4 +1,5 @@
 ﻿using Domain.Business;
+using Repository.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,8 @@ namespace Repository.Repositories
 {
     public class ExampleRepository : BaseRepository<ExampleClass>
     {
+        public ExampleRepository(DataContext context = null) : base(context)
+        {
+        }
     }
 }

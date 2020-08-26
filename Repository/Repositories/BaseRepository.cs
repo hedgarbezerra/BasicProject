@@ -9,10 +9,18 @@ using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public abstract class BaseRepository<T>
+    public class BaseRepository<T>
         where T : class
     {
         protected DataContext _context;
+
+        public BaseRepository( DataContext context = null)
+        {
+            if (context != null)
+                this._context = context;
+            else
+                this._context = new DataContext();
+        }
 
         public virtual T Inserir(T obj)
         {
