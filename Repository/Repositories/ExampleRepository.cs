@@ -1,16 +1,11 @@
 ﻿using Domain.Business;
-using Repository.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Repository.Repositories
 {
     public class ExampleRepository : BaseRepository<ExampleClass>
     {
-        public ExampleRepository(DataContext context = null) : base(context)
+        public ExampleRepository(DbContext context = null) : base(context)
         {
         }
     }

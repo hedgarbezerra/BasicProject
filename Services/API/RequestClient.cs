@@ -9,24 +9,24 @@ using System.Threading.Tasks;
 
 namespace Services.API
 {
-    public class RequestClient
+    public class RequestClient : IRequestClient
     {
-        private RestClient client;
+        private readonly RestClient _client;
         public RequestClient()
         {
-            this.client = new RestClient();
+            this._client = new RestClient();
         }
 
         public RequestClient(string urlBase)
         {
-            this.client = new RestClient(urlBase);
+            this._client = new RestClient(urlBase);
         }
 
         public T Get<T>(string url)
         {
             var request = new RestRequest(url, Method.GET, DataFormat.Json);
 
-            var response = client.Get<T>(request);
+            var response = _client.Get<T>(request);
 
             if (response.IsSuccessful)
             {
@@ -41,7 +41,7 @@ namespace Services.API
             var request = new RestRequest(url, Method.POST, DataFormat.Json);
             request.AddJsonBody(param);
 
-            var response = client.Post<T>(request);
+            var response = _client.Post<T>(request);
 
             if (response.IsSuccessful)
             {
@@ -57,7 +57,7 @@ namespace Services.API
             //request.AddJsonBody(param);
             param.ForEach(p => request.AddParameter(p.Key, p.Value));
 
-            var response = client.Post<T>(request);
+            var response = _client.Post<T>(request);
 
             if (response.IsSuccessful)
             {
@@ -72,7 +72,7 @@ namespace Services.API
             var request = new RestRequest(url, Method.POST, DataFormat.Json);
             request.AddJsonBody(param);
 
-            var response = client.Put<T>(request);
+            var response = _client.Put<T>(request);
 
             if (response.IsSuccessful)
             {
@@ -88,7 +88,7 @@ namespace Services.API
             //request.AddJsonBody(param);
             param.ForEach(p => request.AddParameter(p.Key, p.Value));
 
-            var response = client.Put<T>(request);
+            var response = _client.Put<T>(request);
 
             if (response.IsSuccessful)
             {
@@ -108,7 +108,7 @@ namespace Services.API
                 param.ForEach(p => request.AddParameter(p.Key, p.Value, ParameterType.GetOrPost));
             }
 
-            var response = client.Get<T>(request);
+            var response = _client.Get<T>(request);
 
             if (response.IsSuccessful)
             {
@@ -123,7 +123,7 @@ namespace Services.API
         {
             var request = new RestRequest(url, Method.GET, DataFormat.Json);
 
-            var response = await client.ExecuteGetAsync<T>(request);
+            var response = await _client.ExecuteGetAsync<T>(request);
 
             if (response.IsSuccessful)
             {
@@ -137,7 +137,7 @@ namespace Services.API
             var request = new RestRequest(url, Method.POST, DataFormat.Json);
             request.AddJsonBody(param);
 
-            var response = await client.ExecutePostAsync<T>(request);
+            var response = await _client.ExecutePostAsync<T>(request);
 
             if (response.IsSuccessful)
             {
@@ -152,7 +152,7 @@ namespace Services.API
 
             param.ForEach(p => request.AddParameter(p.Key, p.Value));
 
-            var response = await client.ExecutePostAsync<T>(request);
+            var response = await _client.ExecutePostAsync<T>(request);
 
             if (response.IsSuccessful)
             {
@@ -164,9 +164,9 @@ namespace Services.API
 
         public void AdicionarCookies(List<Cookie> cookies)
         {
-            this.client.CookieContainer = new CookieContainer();
+            this._client.CookieContainer = new CookieContainer();
 
-            cookies.ForEach(cookie => this.client.CookieContainer.Add(cookie));
+            cookies.ForEach(cookie => this._client.CookieContainer.Add(cookie));
         }
     }
 }

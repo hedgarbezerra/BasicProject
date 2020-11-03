@@ -1,4 +1,5 @@
 ﻿using Domain.Business;
+using Repository.Context;
 using Repository.Repositories;
 using System;
 using System.Collections.Generic;
@@ -10,18 +11,20 @@ namespace Services.Services
 {
     public class ExampleService
     {
-        private ExampleRepository repo;
+        private readonly ExampleRepository _repo;
+        private readonly DataContext _context;
        
         public ExampleService()
         {
-            repo = new ExampleRepository();
+            _context = new DataContext();
+            _repo = new ExampleRepository(_context);
         }
 
         public void Add(ExampleClass example)
         {
-            repo.Inserir(example);
+            _repo.Inserir(example);
 
-            repo.Savechanges();
+            _repo.Savechanges();
         }
     }
 }
