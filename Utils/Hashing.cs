@@ -7,9 +7,21 @@ using System.Threading.Tasks;
 
 namespace Utils
 {
+    /// <summary>
+    /// Classe estática com métodos de geração e comparação de hashes que utilizam salt bytes
+    /// </summary>
     public static class Hashing
     {
+        /// <summary>
+        /// provedor do serviço de criptografia e hashing
+        /// </summary>
         private static readonly RNGCryptoServiceProvider rngProvider = new RNGCryptoServiceProvider();
+        /// <summary>
+        /// Método que retorna uma string hasheada a partir de criptografia de 256 bits com salt, sendo impossível a descriptografia
+        /// </summary>
+        /// <param name="plainText">string com texto limpo</param>
+        /// <param name="saltBytes">salt bytes opcionais, caso não seja preenchido será gerado</param>
+        /// <returns>string a partir do parâmetro plainText hasheada com salt inserido ou gerado</returns>
         public static string ComputeHash(string plainText, byte[] saltBytes = null)
         {
             if (saltBytes == null)
@@ -56,6 +68,12 @@ namespace Utils
             return hashValue;
         }
 
+        /// <summary>
+        /// Método verifica se o texto limpo gera o mesmo byte array que o texto com hash retornando um boolean
+        /// </summary>
+        /// <param name="plainText">texto limpo sem qualquer criptografia</param>
+        /// <param name="hashValue">texto gerado pelo método de hash do sistema</param>
+        /// <returns>retorna um boolean com a validação dos byte arrays gerados</returns>
         public static bool VerifyHash(string plainText,
                                       string hashValue)
         {
@@ -80,19 +98,22 @@ namespace Utils
             return hashValue == expectedHashString;
         }
 
-        public static string RandomPassword(int tamanhoSenha = 8)
+        /// <summary>
+        /// Método retorna uma string aleatória podendo ser utilizadas para senhas, ou quaisquer outras coisas
+        /// </summary>
+        /// <param name="tamanhoString">int com o tamanho desejado da string</param>
+        /// <returns>string aleatória utilizando letras, caracteres especiais e números</returns>
+        public static string RandomString(int tamanhoString = 8)
         {
             char[] chars = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$%&".ToCharArray();
 
-            byte[] data = new byte[4 * tamanhoSenha];
-
+            byte[] data = new byte[4 * tamanhoString];
 
             rngProvider.GetBytes(data);
 
+            StringBuilder result = new StringBuilder(tamanhoString);
 
-            StringBuilder result = new StringBuilder(tamanhoSenha);
-
-            for (int i = 0; i < tamanhoSenha; i++)
+            for (int i = 0; i < tamanhoString; i++)
             {
                 var rnd = BitConverter.ToUInt32(data, i * 4);
                 var idx = rnd % chars.Length;

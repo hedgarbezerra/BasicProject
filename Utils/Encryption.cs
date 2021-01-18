@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Utils
 {
+    /// <summary>
+    /// Classe estática voltada a encriptação
+    /// </summary>
     public static class Encryption
     {
         // This constant is used to determine the keysize of the encryption algorithm in bits.
@@ -15,6 +18,11 @@ namespace Utils
         // This constant determines the number of iterations for the password bytes generation function.
         private const int DerivationIterations = 1000;
 
+        /// <summary>
+        /// Utiliza o método de sobrecarga com mesmo nome para encriptar um texto a partir de uma string
+        /// </summary>
+        /// <param name="plainText">Qualquer texto/string que deva ser encriptado</param>
+        /// <returns>string com texto encriptografado</returns>
         public static string Encrypt(string plainText)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
@@ -24,6 +32,11 @@ namespace Utils
             return Convert.ToBase64String(plainTextArrEncrypted);
         }
 
+        /// <summary>
+        /// Faz a encriptação de quaisquer arrays de bytes utilizando uma chave definida no webconfig/appconfig
+        /// </summary>
+        /// <param name="plainTextBytes"></param>
+        /// <returns>byte array do texto encriptografado</returns>
         public static byte[] Encrypt(byte [] plainTextBytes)
         {
             // Salt and IV is randomly generated each time, but is preprended to encrypted cipher text
@@ -49,7 +62,7 @@ namespace Utils
                             {
                                 cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
                                 cryptoStream.FlushFinalBlock();
-                                // Create the final bytes as a concatenation of the random salt bytes, the random iv bytes and the cipher bytes.
+
                                 var cipherTextBytes = saltStringBytes;
                                 cipherTextBytes = cipherTextBytes.Concat(ivStringBytes).ToArray();
                                 cipherTextBytes = cipherTextBytes.Concat(memoryStream.ToArray()).ToArray();
@@ -64,6 +77,11 @@ namespace Utils
             }
         }
 
+        /// <summary>
+        /// Utilizando um método de sobrecarga faz a descriptográfia do texto encriptado
+        /// </summary>
+        /// <param name="cipherText">O texto encriptado pelo sistema</param>
+        /// <returns>string com texto descriptografado</returns>
         public static string Decrypt(string cipherText)
         {
             var cipherTextBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
@@ -71,9 +89,15 @@ namespace Utils
             var decryptedCipherTextBytes = Decrypt(cipherTextBytesWithSaltAndIv, out int decryptedBytesCount);
 
             return Encoding.UTF8.GetString(decryptedCipherTextBytes, 0, decryptedBytesCount);
-            //return Convert.ToBase64String(decryptedCipherTextBytes);
 
         }
+
+        /// <summary>
+        /// Faz a descriptografia do byte array recebido
+        /// </summary>
+        /// <param name="cipherTextBytesWithSaltAndIv">recebe o byte array criptografado</param>
+        /// <param name="decryptedByteCount">Parâmetro de saída decryptedByteCount com quantidade de bytes da operação</param>
+        /// <returns>byte array do texto criptografado</returns>
         public static byte[] Decrypt(byte [] cipherTextBytesWithSaltAndIv, out int decryptedByteCount)
         {
             // Get the saltbytes by extracting the first 32 bytes from the supplied cipherText bytes.
@@ -114,6 +138,10 @@ namespace Utils
             }
         }
 
+        /// <summary>
+        /// Método privado prove um byte array aleatório para criptografia
+        /// </summary>
+        /// <returns>retorna um byte array de 256 bits aleatório</returns>
         private static byte[] Generate256BitsOfRandomEntropy()
         {
             var randomBytes = new byte[32]; // 32 Bytes will give us 256 bits.
