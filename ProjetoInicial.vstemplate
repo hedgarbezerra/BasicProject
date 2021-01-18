@@ -1,0 +1,39 @@
+﻿<VSTemplate Version="3.0.0" Type="ProjectGroup" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name>Projeto base</Name>
+    <Description>
+      A project template for building ASP.NET application along with Business layer, Data access layer and Service layer
+    </Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType>Web</ProjectSubType>
+    <LanguageTag>CSharp</LanguageTag>
+    <PlatformTag>Web</PlatformTag>
+    <CreateNewFolder>true</CreateNewFolder>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>ProjetoBase</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>projectIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectCollection>
+      <ProjectTemplateLink ProjectName="$projectname$.Domain" CopyParameters="true">
+        DefaultProject.Domain\MyTemplate.vstemplate
+      </ProjectTemplateLink>
+      
+      <ProjectTemplateLink ProjectName="$projectname$.Repository" CopyParameters="true">
+        DefaultProject.Repository\MyTemplate.vstemplate
+      </ProjectTemplateLink>
+      
+      <ProjectTemplateLink ProjectName="$projectname$.Services" CopyParameters="true">
+        DefaultProject.Services\MyTemplate.vstemplate
+      </ProjectTemplateLink>
+
+      <ProjectTemplateLink ProjectName="$projectname$.Utils" CopyParameters="true">
+        DefaultProject.Utils\MyTemplate.vstemplate
+      </ProjectTemplateLink>
+    </ProjectCollection>
+  </TemplateContent>
+</VSTemplate>
